@@ -22,10 +22,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-//    @Query(value = "insert into users (name, age) values(:name, :age), nativeQuery = true)
     @Query(
             value =
-//                    "insert into users (id, name, age) values (:id, :name, :age)",
                     "insert into users (id, name, age) values (?1, ?2, ?3)",
             nativeQuery = true)
     Integer post(Integer id, String name, Integer age);
