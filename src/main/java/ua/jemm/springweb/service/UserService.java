@@ -31,13 +31,11 @@ public class UserService {
 
     public List<User> getByAgeAneName(Integer age, String name) {
         return userRepository.getUsersByAgeAndName(age, name);
-//        return userRepository.getByAgeAneName(age,name);
     }
 
     public List<User> getByName(String name) {
 
-        return null;
-//return userRepository.findBy(name);
+        return userRepository.getUsersByName(name);
     }
 
     public List<User> getByAge(Integer age) {
@@ -47,10 +45,11 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
-//
-//    public User post(User user) {
-//        return userRepository.post(user);
-//    }
+
+    public Integer post(Integer id, String name, Integer age) {
+//        return null;
+        return userRepository.post(id, name, age);
+    }
 
     public User update(User user) {
         return userRepository.save(user);

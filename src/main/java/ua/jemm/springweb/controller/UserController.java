@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.jemm.springweb.controller.dto.IntegerDto;
 import ua.jemm.springweb.controller.dto.StringDto;
 import ua.jemm.springweb.controller.dto.UserDto;
 import ua.jemm.springweb.controller.mapper.UserMapper;
+import ua.jemm.springweb.model.User;
 import ua.jemm.springweb.service.UserService;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getById(@PathVariable Integer id) {
+//        return null;
         return new ResponseEntity<>(
                 userMapper.toDto(
                         userService.getById(id)),
@@ -56,8 +59,8 @@ public class UserController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("/age/{age}")
-    public ResponseEntity<List<UserDto>> getByAge(@PathVariable Integer age) {
+    @GetMapping("//")
+    public ResponseEntity<List<UserDto>> getByAge(@RequestParam Integer age) {
         return new ResponseEntity<>(
                 userMapper.toDtoList(
                         userService.getByAge(age)),
@@ -75,14 +78,16 @@ public class UserController {
                                 userMapper.toEntity(userDto))),
                 HttpStatus.CREATED);
     }
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<UserDto> post(@RequestBody UserDto userDto) {
-//        return new ResponseEntity<>(
-//                userMapper.toDto(
-//                        userService.post(
-//                                userMapper.toEntity(userDto))),
-//                HttpStatus.CREATED);
-//    }
+
+    @PostMapping("/post")
+    public IntegerDto post(@RequestParam (required = true)  Integer id,
+                           @RequestParam String name,
+                           @RequestParam Integer age ){
+        System.out.printf(String.format("post: id: %d, name: %s, age: %d\n",id, name , age));
+        IntegerDto response = new IntegerDto(userService.post(id, name, age));
+        System.out.println(response);
+        return response;
+    }
 
     @PutMapping()
     public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
@@ -92,7 +97,6 @@ public class UserController {
                 HttpStatus.OK);
     }
 
-    //@PatchMapping
     @DeleteMapping
     public ResponseEntity<Integer> delete(@RequestParam Integer id) {
         return new ResponseEntity<>(
@@ -105,5 +109,12 @@ public class UserController {
     public StringDto getEmailById(@PathVariable Integer userId) {
         return new StringDto("mail@mail.ua", "Доброго ранку!");
 
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<UserDto>> getByName(@PathVariable String name) {
+        return new ResponseEntity<>(
+                userMapper.toDtoList(userService.getByName(name)),
+                HttpStatus.FOUND);
     }
 }
